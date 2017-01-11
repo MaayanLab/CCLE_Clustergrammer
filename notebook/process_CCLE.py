@@ -75,17 +75,21 @@ def proc_CCLE():
   row_names = []
   col_names = []
 
-
   # add meta-data to cell lines
   # tissue, histology, sub-histology, gender
-  dup_number = 1
+  dup_nci = 1
+  dup_tt = 1
   for inst_cl in cell_lines_long:
 
     short_name = inst_cl.split('_')[0]
 
     if short_name == 'NCIH292':
-      short_name = short_name + '-' + str(dup_number)
-      dup_number = dup_number + 1
+      short_name = short_name + '-' + str(dup_nci)
+      dup_nci = dup_nci + 1
+
+    if short_name == 'TT':
+      short_name = short_name + '-' + str(dup_tt)
+      dup_tt = dup_tt + 1
 
     short_name = 'cell line: ' + short_name
 
@@ -107,10 +111,9 @@ def proc_CCLE():
 
     col_names.append(inst_tuple)
 
-
   # loop through the file, save gene names and values
-  # for i in range(len(ccle_ini)):
-  for i in range(15):
+  dup_ttl = 1
+  for i in range(len(ccle_ini)):
 
     # skip the first two lines
     if i > 2:
@@ -128,35 +131,45 @@ def proc_CCLE():
         # make sure that there is a gene name: check the first letter
         if str.isalpha(inst_gene_name[0]):
 
-          print(inst_gene_name)
+          inst_gene = inst_row[row_gs]
+
+          if inst_gene == 'TTL':
+            inst_gene = inst_gene + str(dup_ttl)
+            dup_ttl = dup_ttl + 1
 
           # get gene name
-          row_names.append( inst_row[row_gs] )
+          row_names.append( inst_gene )
 
-          # get data
-          inst_data = np.asarray( inst_row[data_start:] )
+          # # get data
+          # inst_data = np.asarray( inst_row[data_start:] )
 
+          # # save data
+          # ################
+          # # initialize array
+          # if i == 3:
+          #   mat = inst_data
 
-          # save data
-          ################
-          # initialize array
-          if i == 3:
-            mat = inst_data
+          # # append more data
+          # else:
+          #   mat = np.vstack([mat, inst_data])
 
-          # append more data
-          else:
-            mat = np.vstack([mat, inst_data])
+          # # check that there are the correct number of data points
+          # if len(inst_data) != num_cl:
+          #   print('missing data in row')
 
-          # check that there are the correct number of data points
-          if len(inst_data) != num_cl:
-            print('missing data in row')
-
-  print(mat.shape)
+  print('size before unique')
   print(len(row_names))
   print(len(col_names))
 
-  df = pd.DataFrame(data=mat, columns=col_names, index=row_names)
+  u_row_names = list(set(row_names))
+  u_col_names = list(set(col_names))
 
-  df.to_csv('../original_data/CCLE.txt', sep='\t')
+  print('size after unique')
+  print(len(u_row_names))
+  print(len(u_col_names))
+
+  # df = pd.DataFrame(data=mat, columns=col_names, index=row_names)
+
+  # df.to_csv('../original_data/CCLE.txt', sep='\t')
 
 main()

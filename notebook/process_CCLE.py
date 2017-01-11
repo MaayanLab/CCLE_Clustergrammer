@@ -99,15 +99,15 @@ def proc_CCLE():
     if '-' in inst_cl:
       inst_cl = inst_cl.split('-')[0]
 
-    inst_tuple = inst_tuple + ('cat: ' + cl_meta[inst_cl]['tissue'],)
-    inst_tuple = inst_tuple + ('cat: ' + cl_meta[inst_cl]['hist'],)
-    inst_tuple = inst_tuple + ('cat: ' + cl_meta[inst_cl]['hist_sub'],)
+    inst_tuple = inst_tuple + ('tissue: ' + cl_meta[inst_cl]['tissue'],)
+    inst_tuple = inst_tuple + ('histology: ' + cl_meta[inst_cl]['hist'],)
+    inst_tuple = inst_tuple + ('sub-histology: ' + cl_meta[inst_cl]['hist_sub'],)
 
     inst_gender = cl_meta[inst_cl]['gender']
     if inst_gender == '':
       inst_gender = 'NA'
 
-    inst_tuple = inst_tuple + ('cat: '+ inst_gender,)
+    inst_tuple = inst_tuple + ('gender: '+ inst_gender,)
 
     col_names.append(inst_tuple)
 
@@ -140,22 +140,22 @@ def proc_CCLE():
           # get gene name
           row_names.append( inst_gene )
 
-          # # get data
-          # inst_data = np.asarray( inst_row[data_start:] )
+          # get data
+          inst_data = np.asarray( inst_row[data_start:] )
 
-          # # save data
-          # ################
-          # # initialize array
-          # if i == 3:
-          #   mat = inst_data
+          # save data
+          ################
+          # initialize array
+          if i == 3:
+            mat = inst_data
 
-          # # append more data
-          # else:
-          #   mat = np.vstack([mat, inst_data])
+          # append more data
+          else:
+            mat = np.vstack([mat, inst_data])
 
-          # # check that there are the correct number of data points
-          # if len(inst_data) != num_cl:
-          #   print('missing data in row')
+          # check that there are the correct number of data points
+          if len(inst_data) != num_cl:
+            print('missing data in row')
 
   print('size before unique')
   print(len(row_names))
@@ -168,8 +168,8 @@ def proc_CCLE():
   print(len(u_row_names))
   print(len(u_col_names))
 
-  # df = pd.DataFrame(data=mat, columns=col_names, index=row_names)
+  df = pd.DataFrame(data=mat, columns=col_names, index=row_names)
 
-  # df.to_csv('../original_data/CCLE.txt', sep='\t')
+  df.to_csv('../original_data/CCLE.txt', sep='\t')
 
 main()

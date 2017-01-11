@@ -3,6 +3,7 @@ def main():
   # # run once: save metadata to json
   # get_cell_line_metadata()
 
+  # save CCLE data to pandas dataframe
   proc_CCLE()
 
 def get_cell_line_metadata():
@@ -48,6 +49,8 @@ def get_cell_line_metadata():
 
 def proc_CCLE():
   import json_scripts
+  import numpy as np
+  import pandas as pd
 
   cl_meta = json_scripts.load_to_dict('../proc_data/CCLE_CL_meta.json')
 
@@ -59,9 +62,7 @@ def proc_CCLE():
 
   # get all cell lines
   row_cl = 2
-  cell_lines_long = ccle_ini[row_cl].split()[2:]
-
-  cell_lines = [d.split('_')[0] for d in cell_lines_long]
+  cell_lines_long = ccle_ini[row_cl].strip().split()[2:]
 
   # gene symbols are on the second column
   row_gs = 1
@@ -69,47 +70,93 @@ def proc_CCLE():
   data_start = 2
 
   # number of cell lines
-  num_cl = len(cell_lines)
+  num_cl = len(cell_lines_long)
 
   row_names = []
   col_names = []
 
+
   # add meta-data to cell lines
   # tissue, histology, sub-histology, gender
+  dup_number = 1
   for inst_cl in cell_lines_long:
 
-    cell_line_short_name = inst_cl.split('_')[0]
-    inst_tuple = (cell_line_short_name,)
+    short_name = inst_cl.split('_')[0]
 
-    inst_tuple = inst_tuple + (cl_meta[inst_cl]['tissue'],)
-    inst_tuple = inst_tuple + (cl_meta[inst_cl]['hist'],)
-    inst_tuple = inst_tuple + (cl_meta[inst_cl]['hist_sub'],)
+    if short_name == 'NCIH292':
+      short_name = short_name + '-' + str(dup_number)
+      dup_number = dup_number + 1
+
+    short_name = 'cell line: ' + short_name
+
+    inst_tuple = (short_name,)
+
+    # remove duplicate number at end of cell line if necesary
+    if '-' in inst_cl:
+      inst_cl = inst_cl.split('-')[0]
+
+    inst_tuple = inst_tuple + ('cat: ' + cl_meta[inst_cl]['tissue'],)
+    inst_tuple = inst_tuple + ('cat: ' + cl_meta[inst_cl]['hist'],)
+    inst_tuple = inst_tuple + ('cat: ' + cl_meta[inst_cl]['hist_sub'],)
 
     inst_gender = cl_meta[inst_cl]['gender']
     if inst_gender == '':
       inst_gender = 'NA'
 
-    inst_tuple = inst_tuple + (inst_gender,)
+    inst_tuple = inst_tuple + ('cat: '+ inst_gender,)
 
     col_names.append(inst_tuple)
 
 
-
-  # # loop through the file, save gene names and values
+  # loop through the file, save gene names and values
   # for i in range(len(ccle_ini)):
+  for i in range(15):
 
-  #   # skip the first two lines
-  #   if i > 2:
+    # skip the first two lines
+    if i > 2:
 
-  #     if i % 1000 == 0:
-  #       print('i\t' + str(i))
+      if i % 1000 == 0:
+        print('i\t' + str(i))
 
-  #     # get row
-  #     inst_row = ccle_ini[i].split('\t')
+      # get row
+      inst_row = ccle_ini[i].strip().split('\t')
 
-  #     # # make sure that there is a gene name: check the first letter
-  #     # if str.isalpha(inst_row[0]):
+      inst_gene_name = inst_row[row_gs]
 
-  #     #   pass
+      if len(inst_gene_name) > 0:
+
+        # make sure that there is a gene name: check the first letter
+        if str.isalpha(inst_gene_name[0]):
+
+          print(inst_gene_name)
+
+          # get gene name
+          row_names.append( inst_row[row_gs] )
+
+          # get data
+          inst_data = np.asarray( inst_row[data_start:] )
+
+
+          # save data
+          ################
+          # initialize array
+          if i == 3:
+            mat = inst_data
+
+          # append more data
+          else:
+            mat = np.vstack([mat, inst_data])
+
+          # check that there are the correct number of data points
+          if len(inst_data) != num_cl:
+            print('missing data in row')
+
+  print(mat.shape)
+  print(len(row_names))
+  print(len(col_names))
+
+  df = pd.DataFrame(data=mat, columns=col_names, index=row_names)
+
+  df.to_csv('../original_data/CCLE.txt', sep='\t')
 
 main()

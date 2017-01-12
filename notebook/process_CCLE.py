@@ -21,7 +21,15 @@ def quick_viz():
   # load matrix tsv file
   net.load_file('../original_data/CCLE.txt')
 
-  net.filter_N_top('row', 10, rank_type='var')
+  net.filter_N_top('row', 100, rank_type='var')
+
+  net.normalize(axis='row', norm_type='zscore', keep_orig=False)
+
+  net.make_clust(dist_type='cos',views=[], sim_mat=False, calc_cat_pval=False)
+
+  net.write_json_to_file('viz', '../json/mult_view.json', 'indent')
+  # net.write_json_to_file('sim_row', '../json/mult_view_sim_row.json', 'no-indent')
+  # net.write_json_to_file('sim_col', '../json/mult_view_sim_col.json', 'no-indent')
 
 def get_cell_line_metadata():
 

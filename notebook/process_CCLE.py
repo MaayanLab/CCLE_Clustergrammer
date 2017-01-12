@@ -1,14 +1,29 @@
+import json_scripts
+import numpy as np
+import pandas as pd
+
 def main():
 
   # # run once: save metadata to json
   # get_cell_line_metadata()
 
-  # save CCLE data to pandas dataframe
-  proc_CCLE()
+  # # save CCLE data to pandas dataframe
+  # proc_CCLE()
+
+  quick_viz()
+
+def quick_viz():
+  # df = pd.DataFrame()
+
+  from clustergrammer import Network
+  net = Network()
+
+  # load matrix tsv file
+  net.load_file('../original_data/CCLE.txt')
+
+  net.filter_N_top('row', 10, rank_type='var')
 
 def get_cell_line_metadata():
-
-  import json_scripts
 
   f = open('../original_data/CCLE_sample_info_file_2012-10-18.txt', 'r')
   lines = f.readlines()
@@ -48,9 +63,6 @@ def get_cell_line_metadata():
 
 
 def proc_CCLE():
-  import json_scripts
-  import numpy as np
-  import pandas as pd
 
   cl_meta = json_scripts.load_to_dict('../proc_data/CCLE_CL_meta.json')
 

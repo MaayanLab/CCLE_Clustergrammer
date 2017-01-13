@@ -15,7 +15,25 @@ def main():
   quick_downsample()
 
 def quick_downsample():
-  pass
+
+  from clustergrammer import Network
+  net = Network()
+
+  # load matrix tsv file
+  net.load_file('../proc_data/rc_two_cats.txt')
+
+  inst_df = net.dat_to_df()
+
+  inst_df = inst_df['mat']
+
+  print(inst_df.shape)
+
+  ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, 10, axis=1)
+
+  print(ds_df.shape)
+
+  ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
+
 
 def run_kmeans_mini_batch(df, n_clusters, axis=0):
   from sklearn.cluster import MiniBatchKMeans
@@ -39,8 +57,8 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
 
   mbk_cluster_names, mbk_cluster_pop = np.unique(mbk_labels, return_counts=True)
 
-  print('mbk cluster names: ' + String(mbk_cluster_names))
-  print('mbk cluster populations: ' + String(mbk_cluster_pop))
+  print('mbk cluster names: ' + str(mbk_cluster_names))
+  print('mbk cluster populations: ' + str(mbk_cluster_pop))
 
   row_numbers = range(n_clusters)
   row_labels = [ 'cluster-' + str(i) for i in row_numbers]

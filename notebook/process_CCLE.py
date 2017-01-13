@@ -10,9 +10,10 @@ def main():
   # # save CCLE data to pandas dataframe
   # proc_CCLE()
 
-  # quick_viz()
-
   quick_downsample()
+
+  quick_viz()
+
 
 def quick_downsample():
 
@@ -20,7 +21,10 @@ def quick_downsample():
   net = Network()
 
   # load matrix tsv file
-  net.load_file('../proc_data/rc_two_cats.txt')
+  ######################3
+  # net.load_file('../proc_data/rc_two_cats.txt')
+
+  net.load_file('../original_data/CCLE.txt')
 
   inst_df = net.dat_to_df()
 
@@ -28,7 +32,9 @@ def quick_downsample():
 
   print(inst_df.shape)
 
-  ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, 10, axis=1)
+  # downsample cols
+  num_clusts = 50
+  ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1)
 
   print(ds_df.shape)
 
@@ -36,6 +42,10 @@ def quick_downsample():
 
 
 def run_kmeans_mini_batch(df, n_clusters, axis=0):
+
+  print('number of clusters')
+  print(n_clusters)
+
   from sklearn.cluster import MiniBatchKMeans
   import pandas as pd
   import numpy as np
@@ -63,13 +73,22 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
   row_numbers = range(n_clusters)
   row_labels = [ 'cluster-' + str(i) for i in row_numbers]
 
+  print('***********************')
+  print(n_clusters)
+  print(len(row_labels))
+  print(len(mbk_cluster_names))
+  print(len(mbk_cluster_pop))
+
   # add number of points in each cluster
   cluster_info = []
   for i in range(n_clusters):
 
     inst_name = 'Cluster: ' + row_labels[i]
+    num_in_clust_string =  'number in clust: '+ str(mbk_cluster_pop[i])
 
-    cluster_info.append(inst_name)
+    inst_tuple = (inst_name, num_in_clust_string)
+
+    cluster_info.append(inst_tuple)
 
   if axis == 0:
     cols = df.columns.tolist()
@@ -93,9 +112,12 @@ def quick_viz():
   net = Network()
 
   # load matrix tsv file
-  net.load_file('../original_data/CCLE.txt')
+  # net.load_file('../original_data/CCLE.txt')
+  net.load_file('../proc_data/inst_ds.txt')
 
-  net.filter_N_top('row', 100, rank_type='var')
+  keep_top_n = 500
+
+  net.filter_N_top('row', keep_top_n, rank_type='var')
 
   net.normalize(axis='row', norm_type='zscore', keep_orig=False)
 

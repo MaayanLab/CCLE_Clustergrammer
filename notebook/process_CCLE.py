@@ -12,7 +12,7 @@ def main():
 
   quick_downsample()
 
-  # quick_viz()
+  quick_viz()
 
 
 def quick_downsample():
@@ -39,7 +39,7 @@ def quick_downsample():
 
 
   # downsample cols
-  num_clusts = 80
+  num_clusts = 50
   ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1)
 
   print(ds_df.shape)
@@ -63,13 +63,16 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
     X = df.transpose()
   # kmeans is run with rows as data-points and columns as dimensions
   mbk = MiniBatchKMeans(init='k-means++', n_clusters=n_clusters,
-                         max_no_improvement=10, verbose=0, random_state=1000)
+                         max_no_improvement=100, verbose=0, random_state=1000)
 
   # need to loop through each label (each k-means cluster) and count how many
   # points were given this label. This will give the population size of each label
   mbk.fit(X)
   mbk_labels = mbk.labels_
   mbk_clusters = mbk.cluster_centers_
+
+  print(type(mbk_clusters))
+  print(mbk_clusters.shape)
 
   mbk_cluster_names, mbk_cluster_pop = np.unique(mbk_labels, return_counts=True)
 

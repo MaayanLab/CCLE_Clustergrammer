@@ -12,7 +12,7 @@ def main():
 
   quick_downsample()
 
-  quick_viz()
+  # quick_viz()
 
 
 def quick_downsample():
@@ -32,8 +32,14 @@ def quick_downsample():
 
   print(inst_df.shape)
 
+  # Gather categories if necessary
+  ########################################
+  # if there are string categories, then keep track of how many of each category
+  # are found in each of the downsampled clusters.
+
+
   # downsample cols
-  num_clusts = 50
+  num_clusts = 80
   ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1)
 
   print(ds_df.shape)
@@ -57,7 +63,7 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
     X = df.transpose()
   # kmeans is run with rows as data-points and columns as dimensions
   mbk = MiniBatchKMeans(init='k-means++', n_clusters=n_clusters,
-                        max_no_improvement=10, verbose=0, random_state=1000)
+                         max_no_improvement=10, verbose=0, random_state=1000)
 
   # need to loop through each label (each k-means cluster) and count how many
   # points were given this label. This will give the population size of each label
@@ -67,21 +73,14 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
 
   mbk_cluster_names, mbk_cluster_pop = np.unique(mbk_labels, return_counts=True)
 
-  print('mbk cluster names: ' + str(mbk_cluster_names))
-  print('mbk cluster populations: ' + str(mbk_cluster_pop))
+  returned_clusters = len(mbk_cluster_pop)
 
-  row_numbers = range(n_clusters)
+  row_numbers = range(returned_clusters)
   row_labels = [ 'cluster-' + str(i) for i in row_numbers]
-
-  print('***********************')
-  print(n_clusters)
-  print(len(row_labels))
-  print(len(mbk_cluster_names))
-  print(len(mbk_cluster_pop))
 
   # add number of points in each cluster
   cluster_info = []
-  for i in range(n_clusters):
+  for i in range(returned_clusters):
 
     inst_name = 'Cluster: ' + row_labels[i]
     num_in_clust_string =  'number in clust: '+ str(mbk_cluster_pop[i])
@@ -115,7 +114,7 @@ def quick_viz():
   # net.load_file('../original_data/CCLE.txt')
   net.load_file('../proc_data/inst_ds.txt')
 
-  keep_top_n = 500
+  keep_top_n = 1000
 
   net.filter_N_top('row', keep_top_n, rank_type='var')
 

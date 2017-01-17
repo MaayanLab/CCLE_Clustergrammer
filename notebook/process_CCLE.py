@@ -72,9 +72,9 @@ def calc_mbk_clusters(X, n_clusters, random_state=1000):
 
   mbk_cluster_names, cluster_pop = np.unique(cluster_labels, return_counts=True)
 
-  num_clusters = len(cluster_pop)
+  num_returned_clusters = len(cluster_pop)
 
-  return clusters, num_clusters, cluster_labels, cluster_pop
+  return clusters, num_returned_clusters, cluster_labels, cluster_pop
 
 def run_kmeans_mini_batch(df, n_clusters, axis=0, random_state=1000):
 
@@ -90,15 +90,22 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0, random_state=1000):
   else:
     X = df.transpose()
 
-  clusters, num_clusters, cluster_labels, cluster_pop = calc_mbk_clusters(X,
-    n_clusters, random_state)
+  # run until the number of returned clusters with data-points is equal to the
+  # number of requested clusters
+  num_returned_clusters = 0
+  while n_clusters != num_returned_clusters:
 
-  row_numbers = range(num_clusters)
+    clusters, num_returned_clusters, cluster_labels, cluster_pop = calc_mbk_clusters(X,
+      n_clusters, random_state)
+
+    random_state = random_state + random_state
+
+  row_numbers = range(num_returned_clusters)
   row_labels = [ 'cluster-' + str(i) for i in row_numbers]
 
   # add number of points in each cluster
   cluster_info = []
-  for i in range(num_clusters):
+  for i in range(num_returned_clusters):
 
     inst_name = 'Cluster: ' + row_labels[i]
     num_in_clust_string =  'number in clust: '+ str(cluster_pop[i])

@@ -32,10 +32,11 @@ def quick_downsample():
 
   print(inst_df.shape)
 
-  # Gather categories if necessary
-  ########################################
-  # if there are string categories, then keep track of how many of each category
-  # are found in each of the downsampled clusters.
+  # # Gather categories if necessary
+  # ########################################
+  # # if there are string categories, then keep track of how many of each category
+  # # are found in each of the downsampled clusters.
+  # tmpinst_df.index.tolist()
 
 
   # downsample cols
@@ -117,7 +118,7 @@ def quick_viz():
   # net.load_file('../original_data/CCLE.txt')
   net.load_file('../proc_data/inst_ds.txt')
 
-  keep_top_n = 1000
+  keep_top_n = 500
 
   net.filter_N_top('row', keep_top_n, rank_type='var')
 

@@ -50,31 +50,33 @@ def quick_downsample():
 
   # downsample cols
   num_clusts = 50
-  ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1)
+  ds_df, cluster_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1,
+    random_state=1000)
 
   print(ds_df.shape)
 
   ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
 
-def get_mbk_clusters(X, n_clusters):
+def calc_mbk_clusters(X, n_clusters, random_state=1000):
 
   # kmeans is run with rows as data-points and columns as dimensions
   mbk = MiniBatchKMeans(init='k-means++', n_clusters=n_clusters,
-                         max_no_improvement=100, verbose=0, random_state=1000)
+                         max_no_improvement=100, verbose=0,
+                         random_state=random_state)
 
   # need to loop through each label (each k-means cluster) and count how many
   # points were given this label. This will give the population size of each label
   mbk.fit(X)
-  mbk_labels = mbk.labels_
-  mbk_clusters = mbk.cluster_centers_
+  cluster_labels = mbk.labels_
+  clusters = mbk.cluster_centers_
 
-  mbk_cluster_names, mbk_cluster_pop = np.unique(mbk_labels, return_counts=True)
+  mbk_cluster_names, cluster_pop = np.unique(cluster_labels, return_counts=True)
 
-  num_clusters = len(mbk_cluster_pop)
+  num_clusters = len(cluster_pop)
 
-  return mbk_clusters, num_clusters, mbk_labels, mbk_cluster_pop
+  return clusters, num_clusters, cluster_labels, cluster_pop
 
-def run_kmeans_mini_batch(df, n_clusters, axis=0):
+def run_kmeans_mini_batch(df, n_clusters, axis=0, random_state=1000):
 
   print('number of clusters')
   print(n_clusters)
@@ -88,7 +90,8 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
   else:
     X = df.transpose()
 
-  mbk_clusters, num_clusters, mbk_labels, mbk_cluster_pop = get_mbk_clusters(X, n_clusters)
+  clusters, num_clusters, cluster_labels, cluster_pop = calc_mbk_clusters(X,
+    n_clusters, random_state)
 
   row_numbers = range(num_clusters)
   row_labels = [ 'cluster-' + str(i) for i in row_numbers]
@@ -98,7 +101,7 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
   for i in range(num_clusters):
 
     inst_name = 'Cluster: ' + row_labels[i]
-    num_in_clust_string =  'number in clust: '+ str(mbk_cluster_pop[i])
+    num_in_clust_string =  'number in clust: '+ str(cluster_pop[i])
 
     inst_tuple = (inst_name, num_in_clust_string)
 
@@ -111,13 +114,13 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
 
   # ds_df is always downsampling the rows, if the use wanted to downsample the
   # columns, the df will be switched back later
-  ds_df = pd.DataFrame(data=mbk_clusters, index=cluster_info, columns=cols)
+  ds_df = pd.DataFrame(data=clusters, index=cluster_info, columns=cols)
 
   # swap back for downsampled columns
   if axis == 1:
     ds_df = ds_df.transpose()
 
-  return ds_df, mbk_labels
+  return ds_df, cluster_labels
 
 def quick_viz():
   # df = pd.DataFrame()

@@ -1,6 +1,7 @@
 import json_scripts
 import numpy as np
 import pandas as pd
+from sklearn.cluster import MiniBatchKMeans
 
 def main():
 
@@ -47,31 +48,16 @@ def quick_downsample():
       print('found string category ')
 
 
+  # downsample cols
+  num_clusts = 50
+  ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1)
 
+  print(ds_df.shape)
 
-  # # downsample cols
-  # num_clusts = 50
-  # ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1)
+  ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
 
-  # print(ds_df.shape)
+def get_mbk_clusters(X, n_clusters):
 
-  # ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
-
-
-def run_kmeans_mini_batch(df, n_clusters, axis=0):
-
-  print('number of clusters')
-  print(n_clusters)
-
-  from sklearn.cluster import MiniBatchKMeans
-  import pandas as pd
-  import numpy as np
-
-  # downsample rows
-  if axis == 0:
-    X = df
-  else:
-    X = df.transpose()
   # kmeans is run with rows as data-points and columns as dimensions
   mbk = MiniBatchKMeans(init='k-means++', n_clusters=n_clusters,
                          max_no_improvement=100, verbose=0, random_state=1000)
@@ -82,19 +68,34 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
   mbk_labels = mbk.labels_
   mbk_clusters = mbk.cluster_centers_
 
-  print(type(mbk_clusters))
-  print(mbk_clusters.shape)
-
   mbk_cluster_names, mbk_cluster_pop = np.unique(mbk_labels, return_counts=True)
 
-  returned_clusters = len(mbk_cluster_pop)
+  num_clusters = len(mbk_cluster_pop)
 
-  row_numbers = range(returned_clusters)
+  return mbk_clusters, num_clusters, mbk_labels, mbk_cluster_pop
+
+def run_kmeans_mini_batch(df, n_clusters, axis=0):
+
+  print('number of clusters')
+  print(n_clusters)
+
+  import pandas as pd
+  import numpy as np
+
+  # downsample rows
+  if axis == 0:
+    X = df
+  else:
+    X = df.transpose()
+
+  mbk_clusters, num_clusters, mbk_labels, mbk_cluster_pop = get_mbk_clusters(X, n_clusters)
+
+  row_numbers = range(num_clusters)
   row_labels = [ 'cluster-' + str(i) for i in row_numbers]
 
   # add number of points in each cluster
   cluster_info = []
-  for i in range(returned_clusters):
+  for i in range(num_clusters):
 
     inst_name = 'Cluster: ' + row_labels[i]
     num_in_clust_string =  'number in clust: '+ str(mbk_cluster_pop[i])
@@ -136,7 +137,7 @@ def quick_viz():
 
   net.make_clust(dist_type='cos',views=[], sim_mat=False, calc_cat_pval=False)
 
-  net.write_json_to_file('viz', '../json/mult_view.json', 'indent')
+  net.write_json_to_file('viz', '../json/mult_view.json', 'no-indent')
   # net.write_json_to_file('sim_row', '../json/mult_view_sim_row.json', 'no-indent')
   # net.write_json_to_file('sim_col', '../json/mult_view_sim_col.json', 'no-indent')
 

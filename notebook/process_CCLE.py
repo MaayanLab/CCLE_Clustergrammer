@@ -41,7 +41,7 @@ def quick_downsample():
 
   # print(ds_df.shape)
 
-  # ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
+  ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
 
 def calc_mbk_clusters(X, n_clusters, random_state=1000):
 
@@ -118,12 +118,7 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
 
   digit_types = sorted(list(set(digit_types)))
 
-
-  print(digit_types)
-
   num_cats = len(digit_types)
-
-  print(num_cats)
 
   # initialize digit_cats dictionary
   digit_cats = {}
@@ -161,8 +156,6 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
     inst_total = np.sum(counts)
     digit_cats[inst_clust] = digit_cats[inst_clust] / inst_total
 
-    print(digit_cats[inst_clust])
-
   # add number of points in each cluster
   cluster_info = []
   for i in range(num_returned_clusters):
@@ -170,7 +163,19 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
     inst_name = 'Cluster: ' + row_labels[i]
     num_in_clust_string =  'number in clust: '+ str(cluster_pop[i])
 
-    inst_tuple = (inst_name, num_in_clust_string)
+    cat_values = digit_cats[i]
+
+    max_cat_fraction = cat_values.max()
+    max_cat_index = np.where(cat_values == max_cat_fraction)[0][0]
+    max_cat_name = digit_types[max_cat_index]
+
+    cat_name_string = 'Majority Tissue: ' + max_cat_name
+
+    inst_tuple = (inst_name, cat_name_string, num_in_clust_string)
+
+    fraction_string = 'Max Pct: ' + str(max_cat_fraction)
+
+    inst_tuple = inst_tuple + (fraction_string,)
 
     cluster_info.append(inst_tuple)
 

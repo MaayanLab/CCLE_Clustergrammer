@@ -37,25 +37,41 @@ def quick_downsample():
   ########################################
   # if there are string categories, then keep track of how many of each category
   # are found in each of the downsampled clusters.
-  tmp = inst_df.columns.tolist()
+  digit_types = []
+  col_info = inst_df.columns.tolist()
+
+  super_string = ': '
 
   # check if there are categories
-  if type(tmp[0]) is tuple:
+  if type(col_info[0]) is tuple:
     print('found categories ')
 
-    # check if category is string
-    if (type(tmp[0][0]) is str):
-      print('found string category ')
+    # gather possible categories
+    for inst_col in col_info:
+
+      inst_cat = inst_col[1]
+
+      if super_string in inst_cat:
+        inst_cat = inst_cat.split(super_string)[1]
+
+      # get first category
+      digit_types.append(inst_cat)
+
+  digit_types = sorted(list(set(digit_types)))
 
 
-  # downsample cols
-  num_clusts = 50
-  ds_df, cluster_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1,
-    random_state=1000)
+  print(digit_types)
+  print(len(digit_types))
 
-  print(ds_df.shape)
 
-  ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
+  # # downsample cols
+  # num_clusts = 50
+  # ds_df, cluster_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1,
+  #   random_state=1000)
+
+  # print(ds_df.shape)
+
+  # ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
 
 def calc_mbk_clusters(X, n_clusters, random_state=1000):
 

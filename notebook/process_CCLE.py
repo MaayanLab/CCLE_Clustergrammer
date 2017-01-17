@@ -38,6 +38,18 @@ def quick_downsample(num_clusts):
 
   # print(ds_df.shape)
 
+  print('max of dataframe')
+  print(ds_df.max())
+
+  max_z = 12
+
+  ds_df[ds_df > max_z] = max_z
+  ds_df[ds_df < -max_z] = -max_z
+
+  print('max of dataframe')
+  print(ds_df.max())
+
+
   ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
 
 def calc_mbk_clusters(X, n_clusters, random_state=1000):
@@ -98,6 +110,8 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
 
   super_string = ': '
 
+  category_number = 1
+
   # check if there are categories
   if type(col_info[0]) is tuple:
     print('found categories ')
@@ -105,7 +119,7 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
     # gather possible categories
     for inst_col in col_info:
 
-      inst_cat = inst_col[1]
+      inst_cat = inst_col[category_number]
 
       if super_string in inst_cat:
         inst_cat = inst_cat.split(super_string)[1]
@@ -137,7 +151,7 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
     for inst_name in clust_names:
 
       # get first category name
-      inst_name = inst_name[1]
+      inst_name = inst_name[category_number]
 
       if super_string in inst_name:
         inst_name = inst_name.split(super_string)[1]

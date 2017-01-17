@@ -11,12 +11,12 @@ def main():
   # # save CCLE data to pandas dataframe
   # proc_CCLE()
 
-  quick_downsample()
+  quick_downsample(num_clusts = 50)
 
-  quick_viz()
+  quick_viz(keep_top_n = 500)
 
 
-def quick_downsample():
+def quick_downsample(num_clusts):
 
   from clustergrammer import Network
   net = Network()
@@ -32,9 +32,6 @@ def quick_downsample():
   inst_df = inst_df['mat']
 
   print(inst_df.shape)
-
-  # downsample to this many clusters
-  num_clusts = 50
 
   ds_df, cluster_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1,
     random_state=1000)
@@ -194,7 +191,7 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
 
   return ds_df, cluster_labels
 
-def quick_viz():
+def quick_viz(keep_top_n = 500):
   # df = pd.DataFrame()
 
   from clustergrammer import Network
@@ -203,8 +200,6 @@ def quick_viz():
   # load matrix tsv file
   # net.load_file('../original_data/CCLE.txt')
   net.load_file('../proc_data/inst_ds.txt')
-
-  keep_top_n = 500
 
   net.filter_N_top('row', keep_top_n, rank_type='var')
 

@@ -219,6 +219,8 @@ def quick_viz(keep_top_n = 500):
 
   net.normalize(axis='row', norm_type='zscore', keep_orig=False)
 
+  net.write_matrix_to_tsv('../proc_data/col_ds_50_row_filt_500.txt')
+
   net.make_clust(dist_type='cos',views=[], sim_mat=False, calc_cat_pval=False)
 
   net.write_json_to_file('viz', '../json/mult_view.json', 'no-indent')

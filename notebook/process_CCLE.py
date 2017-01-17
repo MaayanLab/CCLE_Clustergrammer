@@ -32,20 +32,30 @@ def quick_downsample():
 
   print(inst_df.shape)
 
-  # # Gather categories if necessary
-  # ########################################
-  # # if there are string categories, then keep track of how many of each category
-  # # are found in each of the downsampled clusters.
-  # tmpinst_df.index.tolist()
+  # Gather categories if necessary
+  ########################################
+  # if there are string categories, then keep track of how many of each category
+  # are found in each of the downsampled clusters.
+  tmp = inst_df.columns.tolist()
+
+  # check if there are categories
+  if type(tmp[0]) is tuple:
+    print('found categories ')
+
+    # check if category is string
+    if (type(tmp[0][0]) is str):
+      print('found string category ')
 
 
-  # downsample cols
-  num_clusts = 50
-  ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1)
 
-  print(ds_df.shape)
 
-  ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
+  # # downsample cols
+  # num_clusts = 50
+  # ds_df, mbk_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1)
+
+  # print(ds_df.shape)
+
+  # ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
 
 
 def run_kmeans_mini_batch(df, n_clusters, axis=0):

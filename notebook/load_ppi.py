@@ -15,21 +15,31 @@ def quick_sim_mat():
 
   net.load_file('../proc_data/df_ppi.txt')
 
-  net.filter_threshold('row', threshold=0.5, num_occur=2)
-  net.filter_threshold('col', threshold=0.5, num_occur=2)
+  # net.filter_threshold('row', threshold=0.5, num_occur=2)
+  # net.filter_threshold('col', threshold=0.5, num_occur=2)
 
   net.make_clust()
   net.write_json_to_file('viz', '../json/ppi.json', 'no-indent')
 
 def make_ppi_sim_mat():
 
-  # load all 500 genes
-  net = Network()
-  net.load_file('../proc_data/col_ds_50_row_filt_500.txt')
-  tmp_df = net.dat_to_df()
-  df = tmp_df['mat']
+  # # load all 500 genes
+  # net = Network()
+  # net.load_file('../proc_data/col_ds_50_row_filt_500.txt')
+  # tmp_df = net.dat_to_df()
+  # df = tmp_df['mat']
+  # genes = sorted(df.index.tolist())
 
-  genes = sorted(df.index.tolist())
+  f = open('tmp_cluster_genes.txt', 'r')
+  lines = f.readlines()
+  f.close()
+
+  genes = []
+  for inst_line in lines:
+    inst_line = inst_line.strip()
+    genes.append(inst_line)
+
+  print(len(genes))
 
   mat = np.identity(len(genes))
 

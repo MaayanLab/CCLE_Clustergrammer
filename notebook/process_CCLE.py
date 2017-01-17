@@ -221,11 +221,11 @@ def quick_viz(keep_top_n = 500):
 
   net.write_matrix_to_tsv('../proc_data/col_ds_50_row_filt_500.txt')
 
-  net.make_clust(dist_type='cos',views=[], sim_mat=False, calc_cat_pval=False)
+  net.make_clust(dist_type='cos',views=[], sim_mat=True, calc_cat_pval=False)
 
   net.write_json_to_file('viz', '../json/mult_view.json', 'no-indent')
-  # net.write_json_to_file('sim_row', '../json/mult_view_sim_row.json', 'no-indent')
-  # net.write_json_to_file('sim_col', '../json/mult_view_sim_col.json', 'no-indent')
+  net.write_json_to_file('sim_row', '../json/mult_view_sim_row.json', 'no-indent')
+  net.write_json_to_file('sim_col', '../json/mult_view_sim_col.json', 'no-indent')
 
 def get_cell_line_metadata():
 

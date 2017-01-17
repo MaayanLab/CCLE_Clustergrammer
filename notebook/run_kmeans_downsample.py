@@ -51,7 +51,7 @@ def run_kmeans_mini_batch(df, n_clusters, axis=0):
 
     found_indices = found[0]
 
-    check = mbk_labels[found_indices]
+    # check = mbk_labels[found_indices]
 
     clust_names = col_array[found_indices]
 

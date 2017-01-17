@@ -33,6 +33,9 @@ def quick_downsample():
 
   print(inst_df.shape)
 
+  # downsample to this many clusters
+  num_clusts = 50
+
   # Gather categories if necessary
   ########################################
   # if there are string categories, then keep track of how many of each category
@@ -61,13 +64,43 @@ def quick_downsample():
 
 
   print(digit_types)
-  print(len(digit_types))
+
+  num_cats = len(digit_types)
+
+  print(num_cats)
+
+  # initialize digit_cats dictionary
+  digit_cats = {}
+  for inst_clust in range(num_clusts):
+    digit_cats[inst_clust] = np.zeros([num_cats])
 
 
-  # # downsample cols
-  # num_clusts = 50
-  # ds_df, cluster_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1,
-  #   random_state=1000)
+  ds_df, cluster_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1,
+    random_state=1000)
+
+  # generate an array of column labels
+  col_array = np.asarray(col_info)
+
+  # populate digit_cats
+  for inst_clust in range(num_clusts):
+
+    # get the indicies of all columns that fall in the cluster
+    found = np.where(cluster_labels == inst_clust)
+    found_indicies = found[0]
+
+    clust_names = col_array[found_indicies]
+
+    for inst_name in clust_names:
+
+      # get first category name
+      inst_name = inst_name[1]
+
+      if super_string in inst_name:
+        inst_name = inst_name.split(super_string)[1]
+
+      tmp_index = digit_types.index(inst_name)
+
+      digit_cats[inst_clust][tmp_index] = digit_cats[inst_clust][tmp_index] + 1
 
   # print(ds_df.shape)
 

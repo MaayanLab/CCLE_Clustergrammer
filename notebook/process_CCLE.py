@@ -36,12 +36,68 @@ def quick_downsample():
   # downsample to this many clusters
   num_clusts = 50
 
+  ds_df, cluster_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1,
+    random_state=1000)
+
+  # print(ds_df.shape)
+
+  # ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
+
+def calc_mbk_clusters(X, n_clusters, random_state=1000):
+
+  # kmeans is run with rows as data-points and columns as dimensions
+  mbk = MiniBatchKMeans(init='k-means++', n_clusters=n_clusters,
+                         max_no_improvement=100, verbose=0,
+                         random_state=random_state)
+
+  # need to loop through each label (each k-means cluster) and count how many
+  # points were given this label. This will give the population size of each label
+  mbk.fit(X)
+  cluster_labels = mbk.labels_
+  clusters = mbk.cluster_centers_
+
+  mbk_cluster_names, cluster_pop = np.unique(cluster_labels, return_counts=True)
+
+  num_returned_clusters = len(cluster_pop)
+
+  return clusters, num_returned_clusters, cluster_labels, cluster_pop
+
+def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
+
+  super_string = ': '
+
+  print('number of clusters')
+  print(num_clusts)
+
+  import pandas as pd
+  import numpy as np
+
+  # downsample rows
+  if axis == 0:
+    X = df
+  else:
+    X = df.transpose()
+
+  # run until the number of returned clusters with data-points is equal to the
+  # number of requested clusters
+  num_returned_clusters = 0
+  while num_clusts != num_returned_clusters:
+
+    clusters, num_returned_clusters, cluster_labels, cluster_pop = calc_mbk_clusters(X,
+      num_clusts, random_state)
+
+    random_state = random_state + random_state
+
+  row_numbers = range(num_returned_clusters)
+  row_labels = [ 'cluster-' + str(i) for i in row_numbers]
+
+
   # Gather categories if necessary
   ########################################
   # if there are string categories, then keep track of how many of each category
   # are found in each of the downsampled clusters.
   digit_types = []
-  col_info = inst_df.columns.tolist()
+  col_info = df.columns.tolist()
 
   super_string = ': '
 
@@ -74,12 +130,8 @@ def quick_downsample():
   for inst_clust in range(num_clusts):
     digit_cats[inst_clust] = np.zeros([num_cats])
 
-
-  ds_df, cluster_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1,
-    random_state=1000)
-
   # generate an array of column labels
-  col_array = np.asarray(col_info)
+  col_array = np.asarray(df.columns.tolist())
 
   # populate digit_cats
   for inst_clust in range(num_clusts):
@@ -102,55 +154,14 @@ def quick_downsample():
 
       digit_cats[inst_clust][tmp_index] = digit_cats[inst_clust][tmp_index] + 1
 
-  # print(ds_df.shape)
+  # calculate fractions
+  for inst_clust in range(num_clusts):
+    # get array
+    counts = digit_cats[inst_clust]
+    inst_total = np.sum(counts)
+    digit_cats[inst_clust] = digit_cats[inst_clust] / inst_total
 
-  # ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
-
-def calc_mbk_clusters(X, n_clusters, random_state=1000):
-
-  # kmeans is run with rows as data-points and columns as dimensions
-  mbk = MiniBatchKMeans(init='k-means++', n_clusters=n_clusters,
-                         max_no_improvement=100, verbose=0,
-                         random_state=random_state)
-
-  # need to loop through each label (each k-means cluster) and count how many
-  # points were given this label. This will give the population size of each label
-  mbk.fit(X)
-  cluster_labels = mbk.labels_
-  clusters = mbk.cluster_centers_
-
-  mbk_cluster_names, cluster_pop = np.unique(cluster_labels, return_counts=True)
-
-  num_returned_clusters = len(cluster_pop)
-
-  return clusters, num_returned_clusters, cluster_labels, cluster_pop
-
-def run_kmeans_mini_batch(df, n_clusters, axis=0, random_state=1000):
-
-  print('number of clusters')
-  print(n_clusters)
-
-  import pandas as pd
-  import numpy as np
-
-  # downsample rows
-  if axis == 0:
-    X = df
-  else:
-    X = df.transpose()
-
-  # run until the number of returned clusters with data-points is equal to the
-  # number of requested clusters
-  num_returned_clusters = 0
-  while n_clusters != num_returned_clusters:
-
-    clusters, num_returned_clusters, cluster_labels, cluster_pop = calc_mbk_clusters(X,
-      n_clusters, random_state)
-
-    random_state = random_state + random_state
-
-  row_numbers = range(num_returned_clusters)
-  row_labels = [ 'cluster-' + str(i) for i in row_numbers]
+    print(digit_cats[inst_clust])
 
   # add number of points in each cluster
   cluster_info = []

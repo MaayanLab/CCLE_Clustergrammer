@@ -11,7 +11,7 @@ def main():
   # # save CCLE data to pandas dataframe
   # proc_CCLE()
 
-  quick_downsample(num_clusts = 50)
+  quick_downsample(num_clusts = 300)
 
   quick_viz(keep_top_n = 2000)
 
@@ -31,23 +31,23 @@ def quick_downsample(num_clusts):
 
   inst_df = inst_df['mat']
 
-  print(inst_df.shape)
+  # print(inst_df.shape)
 
   ds_df, cluster_labels = run_kmeans_mini_batch(inst_df, num_clusts, axis=1,
     random_state=1000)
 
   # print(ds_df.shape)
 
-  print('max of dataframe')
-  print(ds_df.max())
+  # print('max of dataframe')
+  # print(ds_df.max())
 
   max_z = 12
 
   ds_df[ds_df > max_z] = max_z
   ds_df[ds_df < -max_z] = -max_z
 
-  print('max of dataframe')
-  print(ds_df.max())
+  # print('max of dataframe')
+  # print(ds_df.max())
 
 
   ds_df.to_csv('../proc_data/inst_ds.txt', sep='\t')
@@ -75,8 +75,8 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
 
   super_string = ': '
 
-  print('number of clusters')
-  print(num_clusts)
+  # print('number of clusters')
+  # print(num_clusts)
 
   import pandas as pd
   import numpy as np
@@ -184,9 +184,9 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
 
     inst_tuple = (inst_name, cat_name_string, num_in_clust_string)
 
-    fraction_string = 'Max Pct: ' + str(max_cat_fraction)
+    # fraction_string = 'Max Pct: ' + str(max_cat_fraction)
 
-    inst_tuple = inst_tuple + (fraction_string,)
+    # inst_tuple = inst_tuple + (fraction_string,)
 
     cluster_info.append(inst_tuple)
 
@@ -221,11 +221,14 @@ def quick_viz(keep_top_n = 500):
 
   net.write_matrix_to_tsv('../proc_data/col_ds_50_row_filt_500.txt')
 
-  net.make_clust(dist_type='cos',views=[], sim_mat=False, calc_cat_pval=False)
+  # run clustering in the notebook
+  ####################################
 
-  net.write_json_to_file('viz', '../json/mult_view.json', 'no-indent')
-  # net.write_json_to_file('sim_row', '../json/mult_view_sim_row.json', 'no-indent')
-  # net.write_json_to_file('sim_col', '../json/mult_view_sim_col.json', 'no-indent')
+  # net.make_clust(dist_type='cos',views=[], sim_mat=False, calc_cat_pval=False)
+
+  # net.write_json_to_file('viz', '../json/mult_view.json', 'no-indent')
+  # # net.write_json_to_file('sim_row', '../json/mult_view_sim_row.json', 'no-indent')
+  # # net.write_json_to_file('sim_col', '../json/mult_view_sim_col.json', 'no-indent')
 
 def get_cell_line_metadata():
 
@@ -373,19 +376,19 @@ def proc_CCLE():
           if len(inst_data) != num_cl:
             print('missing data in row')
 
-  print('size before unique')
-  print(len(row_names))
-  print(len(col_names))
+  # print('size before unique')
+  # print(len(row_names))
+  # print(len(col_names))
 
   u_row_names = list(set(row_names))
   u_col_names = list(set(col_names))
 
-  print('size after unique')
-  print(len(u_row_names))
-  print(len(u_col_names))
+  # print('size after unique')
+  # print(len(u_row_names))
+  # print(len(u_col_names))
 
   df = pd.DataFrame(data=mat, columns=col_names, index=row_names)
 
   df.to_csv('../original_data/CCLE.txt', sep='\t')
 
-main()
+# main()

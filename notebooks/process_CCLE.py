@@ -116,7 +116,7 @@ def run_kmeans_mini_batch(df, num_clusts, axis=0, random_state=1000):
 
   # check if there are categories
   if type(col_info[0]) is tuple:
-    print('found categories ')
+    # print('found categories ')
 
     # gather possible categories
     for inst_col in col_info:

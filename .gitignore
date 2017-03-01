@@ -1,4 +1,5 @@
 # Compiled source #
+
 ###################
 *.com
 *.class
@@ -61,6 +62,7 @@ sftp-config.json
 
 # python
 *.ipynb_checkpoints
+*.pyc
 clustergrammer
 
 # ignore large original data files

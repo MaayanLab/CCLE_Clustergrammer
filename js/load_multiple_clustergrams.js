@@ -12,7 +12,7 @@ default_args = {};
   default_args.dendro_callback = dendro_callback;
 
 function make_clust(make_sim_mats){
-  var clust_name = 'mult_view.json'
+  var clust_name = 'intra-norm_bone.json'
 
   d3.json('json/'+clust_name, function(network_data){
 

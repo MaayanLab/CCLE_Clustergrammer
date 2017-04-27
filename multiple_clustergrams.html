@@ -74,7 +74,7 @@
         font-size: 16px;
         font-weight: 300;
         margin-top: 10px;
-        margin-left: 5px;
+        margin-left: -15px;
         margin-right: 20px;
         text-align: justify;
         margin-bottom: 30px;
@@ -89,14 +89,16 @@
   <div id="wrap" class='container'>
 
     <div class='row viz_title' id='clustergram_title'>
-    Clustergrammer
+    CCLE Explorer
     </div>
 
-    <div class="row" >
-      <div id='container-id-1' class='clustergrammer_container'>
-          <div class='wait_message'>Please wait ...</div>
-      </div>
+    <div class='row viz_description' id='clustergram_desc'>
+      <p>Above is a clustergram/heatmap visualization of your input matrix. The rows and columns have been hierarchically clustered, using the Scipy library in Python, using cosine distance and average linkage. Red/blue cells in the matrix represent positive/negative values in your matrix. The visualization interactive (zoomable, reorderable, filterable) and shareable - the current URL is permanent and shareable.</p>
     </div>
+
+    <!-- <div class="row" > -->
+      <div id='tree_container'></div>
+    <!-- </div> -->
 
     <div class='row viz_description' id='clustergram_desc'>
       <p>Above is a clustergram/heatmap visualization of your input matrix. The rows and columns have been hierarchically clustered, using the Scipy library in Python, using cosine distance and average linkage. Red/blue cells in the matrix represent positive/negative values in your matrix. The visualization interactive (zoomable, reorderable, filterable) and shareable - the current URL is permanent and shareable.</p>
@@ -166,6 +168,8 @@
   <script src='js/send_to_Enrichr.js'></script>
   <script src='js/Enrichrgram.js'></script>
   <script src='js/hzome_functions.js'></script>
+
+  <script src='js/ccle_tree.js'></script>
 
   <!-- make clustergrams -->
   <script src='js/load_multiple_clustergrams.js'></script>

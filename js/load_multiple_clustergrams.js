@@ -19,7 +19,10 @@ $(document).ready(function(){
     $(this).scrollTop(0);
 });
 
-make_heatmaps('haematopoietic_and_lymphoid_tissue');
+// make_heatmaps('haematopoietic_and_lymphoid_tissue');
+// make_heatmaps('central_nervous_system');
+// make_heatmaps('stomach');
+// make_heatmaps('stomach');
 
 d3.select(window).on('resize',function(){
   resize_container();

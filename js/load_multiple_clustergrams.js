@@ -35,6 +35,11 @@ window.onscroll = function() {
 
 function make_heatmaps(inst_type){
 
+  d3.select('#tissue_title')
+    .html(function(){
+      return  'Tissue Expression: ' + inst_type.toUpperCase();
+    })
+
   d3.selectAll('#container-id div').remove();
 
   // <div class='wait_message'>Please wait ...</div>

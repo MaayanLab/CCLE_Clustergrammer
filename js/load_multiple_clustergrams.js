@@ -18,17 +18,18 @@ function make_clust(make_sim_mats){
 
     var args = $.extend(true, {}, default_args);
 
-    args.root = '#container-id-1';
+    args.root = '#container-id-2';
     args.network_data = network_data;
 
     cgm['clust'] = Clustergrammer(args);
     d3.select(cgm['clust'].params.root+' .wait_message').remove();
-    cat_colors = cgm['clust'].params.viz.cat_colors;
 
-    check_setup_enrichr(cgm['clust']);
+    // cat_colors = cgm['clust'].params.viz.cat_colors;
 
-    make_sim_mats('col', cat_colors);
-    make_sim_mats('row', cat_colors);
+    // check_setup_enrichr(cgm['clust']);
+
+    // make_sim_mats('col', cat_colors);
+    // make_sim_mats('row', cat_colors);
 
   });
 
@@ -62,20 +63,6 @@ window.onscroll = function() {
   var hide_col_sim = 1800;
   var inst_scroll = $(document).scrollTop();
 
-  // // load col sim mat
-  // if (inst_scroll > show_col_sim){
-  //   if (d3.select('#container-id-2 .viz_svg').empty()){
-  //     make_sim_mats('col', cat_colors)
-  //   }
-  // }
-
-  // // load row sim mat
-  // if (inst_scroll > show_row_sim){
-  //   if (d3.select('#container-id-3 .viz_svg').empty()){
-  //     make_sim_mats('row', cat_colors)
-  //   }
-  // }
-
   // hide clust
   if (inst_scroll > hide_clust){
     d3.select('#container-id-1 .viz_svg')
@@ -107,12 +94,12 @@ function make_sim_mats(inst_rc, cat_colors){
     // do not need to transfer cat colors if predefined in viz_json
     if (inst_rc === 'col'){
       tmp_num = 2;
-      args.cat_colors.row = cat_colors.col;
-      args.cat_colors.col = cat_colors.col;
+      // args.cat_colors.row = cat_colors.col;
+      // args.cat_colors.col = cat_colors.col;
     } else if (inst_rc === 'row'){
       tmp_num = 3;
-      args.cat_colors.row = cat_colors.row;
-      args.cat_colors.col = cat_colors.row;
+      // args.cat_colors.row = cat_colors.row;
+      // args.cat_colors.col = cat_colors.row;
     }
 
     args.root = '#container-id-'+tmp_num;

@@ -9,7 +9,7 @@ default_args = {};
 default_args.row_tip_callback = hzome.gene_info;
 default_args.matrix_update_callback = matrix_update_callback;
 default_args.dendro_callback = dendro_callback;
-default_args.sidebar_width = 150;
+default_args.sidebar_width = 135;
 
 d3.select('.blockMsg').select('h1').text('Please wait...');
 
@@ -20,7 +20,7 @@ $(document).ready(function(){
 });
 
 // make_heatmaps('haematopoietic_and_lymphoid_tissue');
-make_heatmaps('bone');
+// make_heatmaps('bone');
 
 
 window.onscroll = function() {
@@ -35,6 +35,15 @@ window.onscroll = function() {
 
 function make_heatmaps(inst_type){
 
+  d3.selectAll('#container-id div').remove();
+
+  // <div class='wait_message'>Please wait ...</div>
+
+  d3.select('#container-id')
+    .append('div')
+    .classed('wait_message', true)
+    .html('Please wait ...');
+
   clust_name = 'json/intra-norm_'+ inst_type + '.json';
 
   d3.json(clust_name, function(network_data){
@@ -42,10 +51,7 @@ function make_heatmaps(inst_type){
     var args = $.extend(true, {}, default_args);
     args.cat_colors = {};
 
-    // always place in section 2
-    tmp_num = 2;
-
-    args.root = '#container-id-'+tmp_num;
+    args.root = '#container-id';
 
     args.network_data = network_data;
     cgm[inst_type] = Clustergrammer(args);

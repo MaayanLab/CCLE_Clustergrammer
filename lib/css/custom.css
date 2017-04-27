@@ -418,7 +418,7 @@ form {
 }
 
 .node div {
-   padding-top: 3%;
+   padding-top: 2%;
    padding-left: 4%;
 }
 
@@ -429,15 +429,20 @@ form {
 
 
 #tree_container{
-  margin-left: -15px;
+  margin-left: 0px;
   /*margin-top: 15px;*/
-  margin-bottom: 50px;
+  margin-bottom: 0px;
   width:940px;
-  height: 600px;
+  height: 560px;
 }
 
 #clustergrammer_logo{
   width:250px;
   margin-top: -15px;
   margin-left: -3px;
+}
+
+.wait_message{
+  font-size: 30px;
+  margin-left: 5px;
 }

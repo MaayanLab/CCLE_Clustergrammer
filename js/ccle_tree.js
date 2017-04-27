@@ -100,8 +100,8 @@ var tree = {
 
 var scale_tree = 1.05;
 
-var width = 955*scale_tree, // innerWidth-40
-    height = 600*scale_tree, // innerHeight-40,
+var width = 910*scale_tree, // innerWidth-40
+    height = 530*scale_tree, // innerHeight-40,
     color = d3.scale.category20c(),
     div = d3.select("#tree_container").append("div")
        .attr('id','new_div')
@@ -142,3 +142,6 @@ function position() {
       .style("height", function(d) { return Math.max(0, d.dy - 1) + "px"; });
 }
 
+
+// make visualization now so that tooltips are positioned correctly
+make_heatmaps('bone');

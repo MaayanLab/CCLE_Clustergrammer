@@ -1,8 +1,7 @@
 var tmp_num;
 var cat_colors;
-// global cgm
+
 cgm = {};
-resize_container();
 
 var hzome = ini_hzome();
 
@@ -11,7 +10,6 @@ default_args.row_tip_callback = hzome.gene_info;
 default_args.matrix_update_callback = matrix_update_callback;
 default_args.dendro_callback = dendro_callback;
 default_args.sidebar_width = 150;
-
 
 d3.select('.blockMsg').select('h1').text('Please wait...');
 
@@ -85,15 +83,5 @@ function dendro_callback(inst_selection){
     d3.selectAll('.enrichr_export_section')
       .style('display', 'none');
   }
-
-}
-
-function resize_container(){
-
-  var container_width = d3.select('#wrap').style('width').replace('px','');
-  var container_width = Number(container_width) - 30;
-
-  d3.selectAll('.clustergrammer_container')
-    .style('width', container_width+'px');
 
 }

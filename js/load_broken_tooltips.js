@@ -1,7 +1,7 @@
 var tmp_num;
 var cat_colors;
 
-cgm = {};
+// cgm = {};
 
 var hzome = ini_hzome();
 
@@ -59,7 +59,7 @@ function make_heatmaps(inst_type){
     args.root = '#container-id';
 
     args.network_data = network_data;
-    cgm[inst_type] = Clustergrammer(args);
+    cgm = Clustergrammer(args);
     d3.select(cgm[inst_type].params.root+' .wait_message').remove();
   });
 

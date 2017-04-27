@@ -1,12 +1,11 @@
-// global cgm
-cgm = {};
-
+console.log('loading heatmap');
 var hzome = ini_hzome();
 
 default_args = {};
-  default_args.row_tip_callback = hzome.gene_info;
-  default_args.matrix_update_callback = matrix_update_callback;
-  default_args.dendro_callback = dendro_callback;
+default_args.row_tip_callback = hzome.gene_info;
+default_args.matrix_update_callback = matrix_update_callback;
+default_args.dendro_callback = dendro_callback;
+default_args.sidebar_width = 140;
 
 function make_clust(){
   var clust_name = 'mult_view.json'
@@ -18,16 +17,15 @@ function make_clust(){
     args.root = '#container-id-2';
     args.network_data = network_data;
 
-    cgm['clust'] = Clustergrammer(args);
-    d3.select(cgm['clust'].params.root+' .wait_message').remove();
+    cgm = Clustergrammer(args);
+    d3.select(cgm.params.root+' .wait_message').remove();
 
-    check_setup_enrichr(cgm['clust']);
+    check_setup_enrichr(cgm);
+
 
   });
 
 }
-
-make_clust();
 
 function matrix_update_callback(){
   console.log('matrix_update_callback')
@@ -60,3 +58,5 @@ function dendro_callback(inst_selection){
   }
 
 }
+
+make_clust();

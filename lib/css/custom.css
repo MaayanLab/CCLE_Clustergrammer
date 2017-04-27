@@ -277,12 +277,6 @@ h2 {
   background-color: #D0D0D0;
 }
 
-/*#tree_container{*/
-  /*display: block;*/
-  /*height: 520px;*/
-  /*width: 920px;*/
-  /*border: 1px solid #DEDEDE;*/
-/*}*/
 
 #input_form{
   margin-bottom: 10px;
@@ -436,7 +430,7 @@ form {
 
 #tree_container{
   margin-left: -15px;
-  margin-top: 15px;
+  /*margin-top: 15px;*/
   margin-bottom: 15px;
   width:940px;
   height: 600px;

@@ -10,6 +10,8 @@ default_args = {};
 default_args.row_tip_callback = hzome.gene_info;
 default_args.matrix_update_callback = matrix_update_callback;
 default_args.dendro_callback = dendro_callback;
+default_args.sidebar_width = 150;
+
 
 d3.select('.blockMsg').select('h1').text('Please wait...');
 
@@ -20,18 +22,8 @@ $(document).ready(function(){
 });
 
 // make_heatmaps('haematopoietic_and_lymphoid_tissue');
-// make_heatmaps('central_nervous_system');
-// make_heatmaps('stomach');
-// make_heatmaps('stomach');
+make_heatmaps('bone');
 
-d3.select(window).on('resize',function(){
-  resize_container();
-
-  _.each(cgm, function(inst_cgm){
-    inst_cgm.resize_viz();
-  })
-
-});
 
 window.onscroll = function() {
 

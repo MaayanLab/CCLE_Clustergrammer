@@ -119,7 +119,8 @@ var node = div.datum(tree).selectAll(".node")
       .attr("class", "node")
       .on('click',function(d){
 
-        make_clust(d.name);
+        make_clust(d.name, 'intra');
+        // make_clust(d.name, 'inter');
 
       })
       .attr('title', function(d) { return d.children ? null : d.name; })
@@ -141,4 +142,6 @@ function position() {
 
 
 // make visualization now so that tooltips are positioned correctly
-make_clust('bone');
+// make_clust('bone', 'intra');
+make_clust('bone', 'intra');
+// make_clust('bone', 'inter');

@@ -7,12 +7,12 @@ default_args.matrix_update_callback = matrix_update_callback;
 default_args.dendro_callback = dendro_callback;
 default_args.sidebar_width = 140;
 
-function make_clust(tissue_name){
+function make_clust(tissue_name, norm_type){
 
-  d3.selectAll('#clustergram_container div')
+  d3.selectAll('#'+norm_type+'_tissue_container div')
     .remove();
 
-  d3.select('#clustergram_container')
+  d3.select('#'+norm_type+'_tissue_container')
     .append('div')
     .classed('wait_message', true)
     .style('font-size', '20px')
@@ -28,13 +28,13 @@ function make_clust(tissue_name){
     })
 
   // var clust_name = 'mult_view.json'
-  var clust_name = 'json/intra-norm_' + clean_name + '.json'
+  var clust_name = 'json/'+norm_type+'-norm_' + clean_name + '.json'
 
   d3.json(clust_name, function(network_data){
 
     var args = $.extend(true, {}, default_args);
 
-    args.root = '#clustergram_container';
+    args.root = '#'+norm_type+'_tissue_container';
     args.network_data = network_data;
 
     cgm = Clustergrammer(args);
@@ -47,9 +47,13 @@ function make_clust(tissue_name){
 }
 
 function matrix_update_callback(){
+
   console.log('matrix_update_callback')
-  if (genes_were_found){
-    enr_obj.clear_enrichr_results();
+
+  if (_.has(enr_obj, this.root)){
+    if (genes_were_found){
+      enr_obj[this.root].clear_enrichr_results();
+    }
   }
 }
 

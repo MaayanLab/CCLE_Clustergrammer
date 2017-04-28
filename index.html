@@ -102,7 +102,7 @@
     CCLE Explorer
     </div>
     <div class='row viz_description' id='clustergram_desc'>
-      <p>The Cancer Cell Line Encyclopedia (CCLE) Explorer enables users to browse relative mRNA expression data for cancer cell lines from the CCLE by tissue of origin using Clustergrammer. Click on a tissue type to view a clustergram of the top 250 most variable genes within a tissue - by default Haematopoietic and Lymphoid Tissue expression is shown. These heatmaps can be used to identify sub-category behavior within tissues and are pre-loaded with enrichment analysis from Enrichr for Gene Ontology Biological Process.</p>
+      <p>The Cancer Cell Line Encyclopedia (CCLE) Explorer enables users to browse relative mRNA expression data for cancer cell lines from the CCLE by tissue of origin using Clustergrammer. Click on a tissue type to view a clustergram of the top 250 most variable genes within a tissue - initially Bone tissue expression is shown. These heatmaps can be used to identify sub-category behavior within tissues and are pre-loaded with enrichment analysis from Enrichr for Gene Ontology Biological Process.</p>
     </div>
 
     <div class="row" >
@@ -115,10 +115,17 @@
     </div>
 
     <div class="row" >
-      <div id='clustergram_container' class='clustergrammer_container sim_mat_container'>
+      <div id='intra_tissue_container' class='clustergrammer_container'>
           <div class='wait_message'>Please wait ...</div>
       </div>
     </div>
+<!--
+    <div class="row" >
+      <div id='inter_tissue_container' class='clustergrammer_container'>
+          <div class='wait_message'>Please wait ...</div>
+      </div>
+    </div>
+ -->
 
     <div class='row viz_description' id='col_sim_desc'>
       <p>Above is a similarity matrix of the columns in your input matrix. The cells in the matrix represent the similarity between columns, where red/blue represent positive/negative similarity (measured as 1 - cosine-distance). Similarity matrices offer a more detailed view of the similarities and differences between rows/columms, e.g. blue cells indicate data points that behave 'oppositely' and this can not be easily seen in a clustergram/heatmap view.</p>

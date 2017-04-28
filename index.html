@@ -63,9 +63,9 @@
 
       #tree_container{
         margin-top: 5px;
-        margin-bottom: 5px;
+        margin-bottom: 1-px;
         width: 1000px;
-        height: 500px;
+        height: 565px;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: 300;
       }
@@ -87,7 +87,7 @@
         margin-left: -15px;
         margin-right: 20px;
         text-align: justify;
-        margin-bottom: 30px;
+        /*margin-bottom: 30px;*/
       }
 
     </style>
@@ -102,22 +102,19 @@
     CCLE Explorer
     </div>
     <div class='row viz_description' id='clustergram_desc'>
-      <p>Above is a clustergram/heatmap visualization of your input matrix. The rows and columns have been hierarchically clustered, using the Scipy library in Python, using cosine distance and average linkage. Red/blue cells in the matrix represent positive/negative values in your matrix. The visualization interactive (zoomable, reorderable, filterable) and shareable - the current URL is permanent and shareable.</p>
+      <p>The Cancer Cell Line Encyclopedia (CCLE) Explorer enables users to browse relative mRNA expression data for cancer cell lines from the CCLE by tissue of origin using Clustergrammer. Click on a tissue type to view a clustergram of the top 250 most variable genes within a tissue - by default Haematopoietic and Lymphoid Tissue expression is shown. These heatmaps can be used to identify sub-category behavior within tissues and are pre-loaded with enrichment analysis from Enrichr for Gene Ontology Biological Process.</p>
     </div>
 
     <div class="row" >
       <div id='tree_container'>
-          <div class='wait_message'>Tree-Container</div>
       </div>
     </div>
 
-    <div class='row viz_description' id='clustergram_desc'>
-      <p>Above is a clustergram/heatmap visualization of your input matrix. The rows and columns have been hierarchically clustered, using the Scipy library in Python, using cosine distance and average linkage. Red/blue cells in the matrix represent positive/negative values in your matrix. The visualization interactive (zoomable, reorderable, filterable) and shareable - the current URL is permanent and shareable.</p>
-    </div>
 
 
 
-    <div class='row viz_title' id='col_sim_title'>
+
+    <div id='tissue_title' class='row viz_title'>
       Tissue Expression
     </div>
 

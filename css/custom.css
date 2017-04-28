@@ -272,7 +272,8 @@ textarea {
 }
 
 .node div {
-   padding: 6px 4%;
+   padding-top: 2%;
+   padding-left: 2%;
 }
 
 .node:hover{

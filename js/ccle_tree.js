@@ -123,6 +123,11 @@ var node = div.datum(tree).selectAll(".node")
 
         console.log(clean_name);
 
+        d3.select('#tissue_title')
+          .html(function(){
+            return 'Tissue Expression: ' + d.name;
+          })
+
 
       })
       .attr('title', function(d) { return d.children ? null : d.name; })

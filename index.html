@@ -32,8 +32,9 @@
       /* Pad bottom by footer height */
       #wrap {
         min-height: 100%;
-        min-width: 800px;
-        max-width: 1000px;
+        /*min-width: 800px;*/
+        /*max-width: 1000px;*/
+        width: 1000px;
       }
 
       /* Set the fixed height of the footer here */
@@ -64,6 +65,7 @@
       #tree_container{
         margin-top: 5px;
         margin-bottom: 1-px;
+        margin-left: 10px;
         width: 1000px;
         height: 565px;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -102,7 +104,7 @@
     CCLE Explorer
     </div>
     <div class='row viz_description' id='clustergram_desc'>
-      <p>The Cancer Cell Line Encyclopedia (CCLE) Explorer enables users to browse relative mRNA expression data for cancer cell lines from the CCLE by tissue of origin using Clustergrammer. Click on a tissue type to view a clustergram of the top 250 most variable genes within a tissue - initially Bone tissue expression is shown. These heatmaps can be used to identify sub-category behavior within tissues and are pre-loaded with enrichment analysis from Enrichr for Gene Ontology Biological Process.</p>
+      <p>The CCLE Explorer enables users to browse relative mRNA expression data for cancer cell lines from the <a href="https://software.broadinstitute.org/software/cprg/?q=node/11">Cancer Cell Line Encyclopedia (CCLE)</a> by tissue of origin using Clustergrammer. Click on a tissue type to view a clustergram of the top 250 most variable genes within a tissue - initially Bone tissue expression is shown. These clustergrams can be used to identify sub-category behavior within tissues and are pre-loaded with enrichment analysis from Enrichr for Gene Ontology Biological Process.</p>
     </div>
 
     <div class="row" >
@@ -128,7 +130,14 @@
  -->
 
     <div class='row viz_description' id='col_sim_desc'>
-      <p>Above is a similarity matrix of the columns in your input matrix. The cells in the matrix represent the similarity between columns, where red/blue represent positive/negative similarity (measured as 1 - cosine-distance). Similarity matrices offer a more detailed view of the similarities and differences between rows/columms, e.g. blue cells indicate data points that behave 'oppositely' and this can not be easily seen in a clustergram/heatmap view.</p>
+      <p>
+      Above is a heatmap of the top 250 most variable genes within a given tissue in the CCLE. This can be useful for identifying tissue sub-types based on expression. The cells in the matrix represent Z-score normalized expression of a given gene in the tissue. Tissues (columns) and genes (rows) have been hierarchically clustered using average linkage and cosine distance. Cell lines from the CCLE have their meta-data encoded as <a href="http://clustergrammer.readthedocs.io/interacting_with_viz.html#interactive-categories">interactive categories</a> including: tissue, histology, sub-histology, and gender. Often cell lines cluster based on their histology or sub-histology. Click the treemap to bring up different tissues.
+      </p>
+      <p>
+      The clustergram has been pre-loaded with enrichment analysis for Gene Ontology Biological Process from <a href="http://amp.pharm.mssm.edu/Enrichr/">Enrichr</a>. Users can use the <a href="http://clustergrammer.readthedocs.io/biology_specific_features.html#enrichment-analysis">Enrichrgram</a> feature to calculate enrichment using different biological libraries (e.g. find transcription factors that specifically target your set of genes using ChEA) by clicking the red Enrichr logo at the top left of the clustergram or can export their genes to Enrichr using the <a href="http://clustergrammer.readthedocs.io/interacting_with_viz.html#interactive-dendrogram">interactive dendrogram</a>. Please see <a href="http://clustergrammer.readthedocs.io/getting_started.html">Getting Started</a> or <a href="http://clustergrammer.readthedocs.io/interacting_with_viz.html#">Interacting with the Visualization</a> for more information about Clustergrammer.
+      </p>
+
+
     </div>
 
   </div>

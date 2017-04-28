@@ -119,15 +119,7 @@ var node = div.datum(tree).selectAll(".node")
       .attr("class", "node")
       .on('click',function(d){
 
-        var clean_name = d.name.replace(/ /g, '_').toLowerCase();
-
-        console.log(clean_name);
-
-        d3.select('#tissue_title')
-          .html(function(){
-            return 'Tissue Expression: ' + d.name;
-          })
-
+        make_clust(d.name);
 
       })
       .attr('title', function(d) { return d.children ? null : d.name; })

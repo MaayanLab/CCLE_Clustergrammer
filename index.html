@@ -61,6 +61,13 @@
         overflow: hidden;
       }
 
+      #tree_container{
+        margin-top: 5px;
+        margin-bottom: 5px;
+        width: 1000px;
+        height: 500px;
+      }
+
       .viz_title{
         width: 100%;
         font-size: 30px;
@@ -97,8 +104,8 @@
     </div>
 
     <div class="row" >
-      <div id='container-id-1' class='clustergrammer_container'>
-          <div class='wait_message'>Please wait ...</div>
+      <div id='tree_container'>
+          <div class='wait_message'>Tree-Container</div>
       </div>
     </div>
 
@@ -155,7 +162,8 @@
   <script src='js/send_to_Enrichr.js'></script>
 
   <!-- make clustergrams -->
-  <script src='js/load_multiple_clustergrams.js'></script>
+  <script src='js/load_ccle_clustergram.js'></script>
+  <script src='js/ccle_tree.js'></script>
 
 </body>
 

@@ -144,4 +144,4 @@ function position() {
 
 
 // make visualization now so that tooltips are positioned correctly
-make_heatmaps('bone');
+make_clust('bone');

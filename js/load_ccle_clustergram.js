@@ -22,7 +22,6 @@ function make_clust(){
 
     check_setup_enrichr(cgm);
 
-
   });
 
 }
@@ -58,5 +57,3 @@ function dendro_callback(inst_selection){
   }
 
 }
-
-make_clust();
